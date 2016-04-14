@@ -2,25 +2,19 @@
 
 function isiscb_proxy_menu() {
 
-    $items['isiscb_proxy/json'] = array(
-				       'access callback'   => true, // available to all
-				       'page callback'     => 'isiscb_proxy_object', // defined below
-				       );
+    $items['isiscb_proxy_json'] = array(
+			     'access callback'   => true, // available to all
+			     'page callback'     => 'isiscb_proxy_object', // defined below
+			     'delivery callback' => drupal_json_output
+			     );
 
-
-
-    $items['admin/settings/isiscb_proxy'] = array(
-						'title' => 'Isis CB Proxy Settings',
-						'description' => 'Configure your ISISCB Proxy',
-						'page callback' => 'drupal_get_form',
-						'page arguments' => array('isiscb_proxy_form'),
-						'access arguments' => array('administer isiscb_proxy settings'),
-						'type' => MENU_NORMAL_ITEM,
-						);
-			   
-
-
-
+    $items['admin/config/isiscb'] = array(
+					  'title' => 'Isis CB Proxy Settings',
+					  'description' => 'Configure your Isis CB Proxy',
+					  'page callback' => 'drupal_get_form',
+					  'page arguments' => array('isiscb_proxy_form'),
+					  'access arguments' => array('administer isiscb_proxy settings'),
+					  );
     return $items;
 }
 
@@ -60,10 +54,12 @@ function isiscb_proxy_object() {
 
 
     /* if cache miss, get from IsisCB */
+
+
+
     $response = drupal_http_request($url);
+
     $data = json_decode($response->data);
-
-
 
     return $data;
 }
