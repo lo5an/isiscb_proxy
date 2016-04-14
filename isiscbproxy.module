@@ -1,0 +1,19 @@
+<?php
+
+function isiscbproxy_menu() {
+
+    $items['isiscbproxy/json'] = array(
+				       'access callback'   => true, // available to all
+				       'page callback'     => 'isiscbproxy_object', // defined below
+				       );
+    return $items;
+}
+
+
+
+function isiscbproxy_object() {
+    $url="http://data.isiscb.org/rest/?format=json";
+    $response = drupal_http_request($url);
+    $data = json_decode($response->data);
+    return $data;
+}
