@@ -66,16 +66,22 @@ function isiscb_proxy_settings() {
 
 
 function isiscb_proxy_object() {
-    $url="http://data.isiscb.org/rest/?format=json";
-
-    /* check for cached data based on url */
 
 
-    /* if cache miss, get from IsisCB */
+    
+    /* get query from url */
+    $my_path = substr(request_path(), strlen('isiscb_proxy_json'));
+    $isis_url="http://data.isiscb.org/rest".$my_path ."?format=json";
 
 
 
-    $response = drupal_http_request($url);
+    /* If it's in the cache, return result from there.  */
+
+    /* If we don't have a session, get one. */
+
+    /* Get data from isiscb and cache it  */
+
+    $response = drupal_http_request($isis_url);
 
     $data = json_decode($response->data);
 
