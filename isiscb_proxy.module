@@ -1,45 +1,63 @@
 <?php
 
 function isiscb_proxy_menu() {
+    $items['isiscb_proxy_json']
+	= array(
+		'access callback'   => true, 
+		'page callback'     => 'isiscb_proxy_object', 
+		'delivery callback' => drupal_json_output
+		);
+    /* add title to admin form */
+    $items['admin/config/isiscb']
+	= array(
+		'title' => 'Isis CB',
+		'description' => 'Isis CB releated settings',
+		'position' => 'right', 
+		'weight' => -15,
+		'page callback' => 'system_admin_menu_block_page', 
+		'access arguments' => array('administer site configuration'), 
+		'file' => 'system.admin.inc', 
+		'file path' => drupal_get_path('module', 'system'), 
+		);
+    
+    /* proxy settings */
+    $items['admin/config/isiscb/proxy']
+	= array(
+		'title' => 'Isis CB Proxy Settings',
+		'description' => 'Configure your Isis CB Proxy',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('isiscb_proxy_settings'),
+		'access arguments' => array('administer isiscb_proxy settings'),
+		'weight' => -10,
+		);
 
-    $items['isiscb_proxy_json'] = array(
-			     'access callback'   => true, // available to all
-			     'page callback'     => 'isiscb_proxy_object', // defined below
-			     'delivery callback' => drupal_json_output
-			     );
-
-    $items['admin/config/isiscb'] = array(
-					  'title' => 'Isis CB Proxy Settings',
-					  'description' => 'Configure your Isis CB Proxy',
-					  'page callback' => 'drupal_get_form',
-					  'page arguments' => array('isiscb_proxy_form'),
-					  'access arguments' => array('administer isiscb_proxy settings'),
-					  );
     return $items;
 }
 
 
 
-function isiscb_proxy_form() {
+function isiscb_proxy_settings() {
 
     $form = array();
 
-    $form['isiscb_proxy_id'] = array(
-				     '#type' => 'textfield',
-				     '#title' => t('Isis CB Client ID'),
-				     '#default_value' => variable_get('onthisdate_maxdisp', ""),
-				     '#description' => t("Client ID to use for retrieving data"),
-				     '#required' => TRUE,
-				     );
+    $form['isiscb_proxy_id']
+	= array(
+		'#type' => 'textfield',
+		'#title' => t('Isis CB Client ID'),
+		'#default_value' => variable_get('onthisdate_maxdisp', ""),
+		'#description' => t("Client ID to use for retrieving data"),
+		'#required' => TRUE,
+		);
 
-    $form['isiscb_proxy_pass'] = array(
-				     '#type' => 'password',
-				     '#title' => t('Isis CB Client Password'),
-				     '#default_value' => variable_get('onthisdate_maxdisp', ""),
-				     '#description' => t("Client password to use for retrieving data"),
-				     '#required' => TRUE,
-				     );
-    
+    $form['isiscb_proxy_pass']
+	= array(
+		'#type' => 'password',
+		'#title' => t('Isis CB Client Password'),
+		'#default_value' => variable_get('onthisdate_maxdisp', ""),
+		'#description' => t("Client password to use for retrieving data"),
+		'#required' => TRUE,
+		);
+
     return system_settings_form($form);
     
 }
