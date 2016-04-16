@@ -27,11 +27,22 @@ function isiscb_proxy_menu() {
 		'description' => 'Configure your Isis CB Proxy',
 		'page callback' => 'drupal_get_form',
 		'page arguments' => array('isiscb_proxy_settings'),
-		'access arguments' => array('administer isiscb_proxy settings'),
+		'access arguments' => array('administer isiscb_proxy'),
 		'weight' => -10,
 		);
 
     return $items;
+}
+
+function isiscb_proxy_permission() {
+    $isisperms =
+	array(
+	      'administer isiscb_proxy' =>
+	      array(
+		    'title' => t('Administer Isis CB Proxy'),
+		    ),
+	      );
+    return $isisperms;
 }
 
 
