@@ -85,6 +85,8 @@ function isiscb_proxy_object() {
 	    $response = drupal_http_request($isis_url);
 	    $isisdata[$mypath] = json_decode($response->data);
 
+	    $isisdata[$mypath]->{'proxied'}=time();	       
+
 	    cache_set("isiscb".$mypath, $isisdata[$mypath], 'cache');
 	}
     }
