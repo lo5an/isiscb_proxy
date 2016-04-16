@@ -2,3 +2,4 @@ name = IsisCB Autenticated Proxy
 description = Provides an authenticated proxy for the IsisCB API
 core = 7.x
 package = Isis CB
+configure = admin/config/isiscb/proxy
