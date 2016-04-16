@@ -67,23 +67,27 @@ function isiscb_proxy_settings() {
 
 function isiscb_proxy_object() {
 
-
-    
     /* get query from url */
-    $my_path = substr(request_path(), strlen('isiscb_proxy_json'));
-    $isis_url="http://data.isiscb.org/rest".$my_path ."?format=json";
+    $mypath = substr(request_path(), strlen('isiscb_proxy_json'));
 
 
+    /* drupal cache system magic */
+    $isisdata = &drupal_static(__FUNCTION__);
+    if (!isset( $isisdata[$mypath] )) {
 
-    /* If it's in the cache, return result from there.  */
+	if ($cache = cache_get("isiscb".$mypath)) {
+	    $isisdata[$mypath] = $cache->data;
 
-    /* If we don't have a session, get one. */
+	}
+	else {
+	    /* actually get json from ISIS CB */
+	    $isis_url="http://data.isiscb.org/rest/${mypath}?format=json";	    
+	    $response = drupal_http_request($isis_url);
+	    $isisdata[$mypath] = json_decode($response->data);
 
-    /* Get data from isiscb and cache it  */
 
-    $response = drupal_http_request($isis_url);
-
-    $data = json_decode($response->data);
-
-    return $data;
+	    cache_set("isiscb".$mypath, $isisdata[$mypath], 'cache');
+	}
+    }
+    return $isisdata[$mypath];
 }
